@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-
-    baseURL: 'https://chatty-drivable-unsliced.ngrok-free.dev/api/process-media',
+    baseURL: 'https://chatty-drivable-unsliced.ngrok-free.dev',
 });
 
 export const sendGenerationRequest = async (inputType, fileData, youtubeUrl, userToken) => {
@@ -10,9 +9,9 @@ export const sendGenerationRequest = async (inputType, fileData, youtubeUrl, use
         let response;
         if (inputType === 'file' || inputType === 'record') {
             const formData = new FormData();
-            formData.append('media_file', fileData);
+            formData.append('file', fileData);
 
-            response = await api.post('/api/generate/file', formData, {
+            response = await api.post('/api/process-media', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${userToken}`,
@@ -20,9 +19,8 @@ export const sendGenerationRequest = async (inputType, fileData, youtubeUrl, use
                 }
             });
         } else if (inputType === 'youtube') {
-            const payload = { "youtube_url": youtubeUrl };
-
-            response = await api.post('/api/generate/link', payload, {
+            const payload = { "url": youtubeUrl };
+            response = await api.post('/api/process-youtube', payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userToken}`,
