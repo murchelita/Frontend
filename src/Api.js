@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://chatty-drivable-unsliced.ngrok-free.dev',
+    baseURL: 'https://chatty-drivable-unsliced.ngrok-free.dev/api/process-media',
 });
 
 export const sendGenerationRequest = async (inputType, fileData, youtubeUrl, userToken) => {
