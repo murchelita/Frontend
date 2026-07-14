@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Result from './pages/Result';
 
 export default function App() {
   return (
@@ -10,8 +11,8 @@ export default function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/* Додаємо новий маршрут для Dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </Router>
   );

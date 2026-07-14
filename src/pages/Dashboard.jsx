@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { sendGenerationRequest } from '../Api';
-
+import { useNavigate } from 'react-router-dom';
+import { sendGenerationRequest } from '../api';
 
 const FileIcon = () => (
     <svg className="w-14 h-14 text-[#2E1071] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -33,6 +33,8 @@ const ClearIcon = () => (
 );
 
 export default function Dashboard() {
+    const navigate = useNavigate();
+
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileError, setFileError] = useState('');
     const fileInputRef = useRef(null);
@@ -46,9 +48,7 @@ export default function Dashboard() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [recordingTime, setRecordingTime] = useState(0);
-    const [generationResult, setGenerationResult] = useState(null);
 
-    // Mutual exclusivity logic
     const hasFile = !!selectedFile;
     const hasAudio = isRecording || !!audioBlob;
     const hasLink = youtubeLink.trim().length > 0;
@@ -65,7 +65,6 @@ export default function Dashboard() {
                 setRecordingTime((prevTime) => {
                     if (prevTime >= 1800) {
                         stopRecording();
-                        alert("Recording automatically stopped: 30-minute limit reached.");
                         return prevTime;
                     }
                     return prevTime + 1;
@@ -94,8 +93,7 @@ export default function Dashboard() {
         const file = e.target.files[0];
         if (!file) return;
 
-        const MAX_SIZE_MB = 25;
-        const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+        const MAX_SIZE_BYTES = 25 * 1024 * 1024;
 
         if (file.size > MAX_SIZE_BYTES) {
             setFileError('File too large. Maximum 25 MB.');
@@ -148,7 +146,6 @@ export default function Dashboard() {
             mediaRecorder.start();
             setIsRecording(true);
         } catch (err) {
-            console.error('Microphone access error:', err);
             alert('Microphone access permission is required.');
         }
     };
@@ -182,22 +179,17 @@ export default function Dashboard() {
         } else if (youtubeLink.trim() !== '') {
             inputType = 'youtube';
         } else {
-            alert('Please upload a file, record audio, or paste a YouTube link!');
             return;
         }
 
         setIsLoading(true);
 
         try {
-            const userToken = localStorage.getItem('token') || 'YOUR_FALLBACK_TOKEN';
+            const userToken = localStorage.getItem('token') || '';
             const result = await sendGenerationRequest(inputType, fileData, youtubeLink, userToken);
-
-            setGenerationResult(result);
-            alert('Summary successfully generated!');
-            console.log('Generation result:', result);
-
+            navigate('/result', { state: { generationData: result } });
         } catch (error) {
-            alert(`AI processing error occurred: ${error.message}`);
+            alert(`Error: ${error.message}`);
         } finally {
             setIsLoading(false);
         }
@@ -205,7 +197,6 @@ export default function Dashboard() {
 
     return (
         <div className="flex flex-col min-h-screen font-sans antialiased text-gray-900 bg-white select-none relative">
-
             {isLoading && (
                 <div className="fixed inset-0 bg-indigo-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-50">
                     <div className="w-20 h-20 border-4 border-t-[#EDF0F8] border-r-indigo-500 border-b-indigo-500 border-l-indigo-500 rounded-full animate-spin"></div>
@@ -223,7 +214,6 @@ export default function Dashboard() {
             </header>
 
             <main className="flex-1 flex flex-col justify-center py-6 pb-24">
-
                 <div className="flex w-full items-stretch min-h-[200px] my-4">
                     <div className="w-1/2 bg-white pl-24 pr-16 flex flex-col justify-center">
                         <p className="text-[17px] leading-relaxed text-gray-900 font-normal">
@@ -374,7 +364,6 @@ export default function Dashboard() {
                         Generate Summary & Quiz
                     </button>
                 </div>
-
             </main>
         </div>
     );
