@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://chatty-drivable-unsliced.ngrok-free.dev',
+    baseURL: import.meta.env.VITE_API_URL,
 });
 
 export const sendGenerationRequest = async (inputType, fileData, youtubeUrl, userToken) => {
