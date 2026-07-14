@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Result from './pages/Result';
+import Profile from './pages/Profile';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

@@ -9,7 +9,11 @@ export default function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log({ email, password });
+
+        localStorage.setItem('email', email);
+        const generatedUsername = email.split('@')[0];
+        localStorage.setItem('username', generatedUsername);
+
         navigate('/dashboard');
     };
 
@@ -25,11 +29,8 @@ export default function Login() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                 >
-                    {/* Book */}
                     <path d="M2 10h12a8 8 0 0 1 8 8v22a6 6 0 0 0-6-6H2z" />
                     <path d="M42 10H30a8 8 0 0 0-8 8v22a6 6 0 0 1 6-6h12z" />
-
-                    {/* Microphone */}
                     <rect x="52" y="12" width="8" height="14" rx="4" />
                     <path d="M46 22v2a10 10 0 0 0 20 0v-2" />
                     <line x1="56" y1="34" x2="56" y2="42" />

@@ -208,7 +208,9 @@ export default function Dashboard() {
             <header className="flex items-center justify-between px-12 py-5 bg-white border-b border-gray-200 shadow-sm z-10">
                 <div className="text-3xl font-bold text-[#2E1071] tracking-tight font-serif">NoteQuiz</div>
                 <h1 className="text-3xl font-extrabold text-[#2E1071] tracking-wide text-center flex-1 max-w-4xl mx-auto">CREATE NEW SUMMARY & TEST</h1>
-                <div className="flex items-center text-gray-800 cursor-pointer hover:opacity-80 transition-opacity">
+                <div
+                    onClick={() => navigate('/profile')}
+                    className="flex items-center text-gray-800 cursor-pointer hover:opacity-80 transition-opacity">
                     <UserAvatarIcon />
                 </div>
             </header>

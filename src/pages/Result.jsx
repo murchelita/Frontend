@@ -74,13 +74,44 @@ export default function Result() {
     const totalAnswered = Object.keys(answers).length;
     const score = getScore();
 
+    useEffect(() => {
+        if (totalAnswered === quiz.length && quiz.length > 0) {
+            const savedHistory = JSON.parse(localStorage.getItem('quizHistory')) || [];
+
+            const existingIndex = savedHistory.findIndex(item => item.title === title);
+
+            const newHistoryItem = {
+                id: Date.now().toString(),
+                title: title || "Generated Topic",
+                date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+                summaryText: summaryText,
+                keyTakeaways: keyTakeaways,
+                quiz: quiz,
+                userScore: {
+                    correct: score,
+                    total: quiz.length
+                }
+            };
+
+            if (existingIndex !== -1) {
+                savedHistory[existingIndex] = newHistoryItem;
+            } else {
+                savedHistory.unshift(newHistoryItem);
+            }
+
+            localStorage.setItem('quizHistory', JSON.stringify(savedHistory));
+        }
+    }, [totalAnswered, quiz.length, score, title, summaryText, keyTakeaways, quiz]);
+
     return (
         <div className="flex flex-col min-h-screen font-sans antialiased text-gray-900 bg-white select-none relative print:bg-white">
 
             <header className="flex items-center justify-between px-12 py-5 bg-white border-b border-gray-200 shadow-sm z-10 print:hidden">
                 <div className="text-3xl font-bold text-[#2E1071] tracking-tight font-serif">NoteQuiz</div>
                 <h1 className="text-3xl font-extrabold text-[#2E1071] tracking-wide text-center flex-1 max-w-4xl mx-auto">LECTURE RESULTS</h1>
-                <div className="flex items-center text-gray-800 cursor-pointer hover:opacity-80 transition-opacity">
+                <div
+                    onClick={() => navigate('/profile')}
+                    className="flex items-center text-gray-800 cursor-pointer hover:opacity-80 transition-opacity">
                     <UserAvatarIcon />
                 </div>
             </header>

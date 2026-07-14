@@ -7,19 +7,24 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    // Ініціалізуємо хук навігації
     const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
-        console.log({ username, email, password, confirmPassword });
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        localStorage.setItem('username', username);
+        localStorage.setItem('email', email);
+
         navigate('/dashboard');
     };
 
     return (
         <div className="flex h-screen w-full font-sans">
-
-            {/* Ліва частина (Фіолетова) */}
             <div className="w-1/2 bg-[#3f1d9b] flex flex-col justify-center items-center p-12 text-center">
                 <svg
                     viewBox="0 0 72 48"
@@ -44,7 +49,6 @@ export default function Register() {
                 </p>
             </div>
 
-            {/* Права частина (Біла) */}
             <div className="w-1/2 bg-white flex flex-col justify-center items-center p-12">
                 <div className="w-full max-w-sm">
                     <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Register</h2>
@@ -114,7 +118,6 @@ export default function Register() {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }
