@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { sendGenerationRequest } from '../api';
+import { sendGenerationRequest } from '../Api';
 
 const FileIcon = () => (
     <svg className="w-14 h-14 text-[#2E1071] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
