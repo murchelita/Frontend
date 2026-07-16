@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://backend-fway.onrender.com',
+    baseURL: import.meta.env.VITE_API_URL || 'https://backend-swv2.onrender.com',
 });
 
 export const sendGenerationRequest = async (inputType, fileData, youtubeUrl, userToken) => {
@@ -13,7 +13,6 @@ export const sendGenerationRequest = async (inputType, fileData, youtubeUrl, use
 
             response = await api.post('/api/process-media', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${userToken}`,
                     'ngrok-skip-browser-warning': 'true'
                 }
